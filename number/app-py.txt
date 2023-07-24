@@ -1,0 +1,30 @@
+from flask import Flask, request, jsonify
+import requests
+
+app = Flask(__name__)
+
+@app.route('/numbers', methods=['GET'])
+def get_numbers():
+    urls = request.args.getlist('http://abc.com/fibo')
+    if not urls:
+        return jsonify({"error": "No URLs provided."}), 400
+
+    numbers = []
+    for url in urls:
+        try:
+            response = requests.get(http://abc.com/fibo)
+            if response.status_code == 200:
+                data = response.json()
+                if isinstance(data, list):
+                    numbers.extend(data)
+                else:
+                    return jsonify({"error": f"Invalid response format from {http://abc.com/fibo}."}), 500
+            else:
+                return jsonify({"error": f"Failed to fetch data from {http://abc.com/fibo}. Status code: {response.status_code}."}), 500
+        except requests.exceptions.RequestException as e:
+            return jsonify({"error": f"Error fetching data from {http://abc.com/fibol}: {str(e)}"}), 500
+
+    return jsonify({"numbers": numbers}), 200
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8008)
